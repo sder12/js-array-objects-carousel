@@ -32,7 +32,18 @@ const sliderText = document.querySelector(".slider-text");
 
 //RIGHT BTN
 rigthBtn.addEventListener("click", function(){
-alert("right btn");
+    //cilo for in the array
+    images.forEach((item) => {
+        // console.log(item);  
+        const imageLink = item["image"];      
+        const titleLink = item["title"];
+        const textLink = item["text"];
+
+        console.log(imageLink)
+        console.log(titleLink) 
+        console.log(textLink)
+        console.log("----") 
+    });
 });
 
 //LEFT BTN
@@ -43,12 +54,9 @@ leftBtn.addEventListener("click", function(){
 
 
 
-images.forEach((item) => {
-    // console.log(item);  
-        console.log(item["image"]);
-        console.log(item["title"])
-        console.log(item["text"])   
-        console.log("----") 
-});
+
+
+
+
 
 
