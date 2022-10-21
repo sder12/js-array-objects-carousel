@@ -1,0 +1,3 @@
+//DEBUG
+document.writeln("hello")
+
