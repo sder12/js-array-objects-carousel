@@ -1,3 +1,0 @@
-//DEBUG
-document.writeln("hello")
-
