@@ -1,9 +1,8 @@
-// PSEUDOCODICE
-//[*] prelevare i chevron dall'html
-//[*]prelevare il contenitore dell'img :slider-img
-//[*]prelevare il contenitore del txt :slider-text
-//[*] aggiungere l eventListener hai due btn
-//[*] ripulire div
+// PSEUDOCODICE - COSA MODIFICARE 
+//[]aumento funzioni per diminuire codice
+//[]thumbnails click - elimino toggle trovo soluzione per eliminare active
+//[]errore: click due volte BTN InverseAutoplay > velocità
+//[]errore: add click InverseAutoPLay if(va a destra){vai a sinistra}else{da sin a destra}
 
 //TAKE from the DOM
 const leftBtn = document.getElementById("chevron-left");
@@ -77,6 +76,56 @@ for (let i = 0; i< thumbsClass.length; i++){
     thumbItem.classList.toggle("active")
   });
 }
+
+
+//AUTOPLAY-------------------------------------------
+//btn STOP and btn CHANGE DIRECTION
+const stopBtn = document.getElementById("btn-stop-move");
+const inverseBtn = document.getElementById("btn-change-order");
+
+//AUTOPLAY automatico from left to right
+const intervalCarousel = setInterval(autoplay, 300);
+
+//BTN --- AUTOPLAY-INVERSE from rigth to left
+let intervalInverse;
+inverseBtn.addEventListener("click", function(){
+  clearInterval(intervalCarousel); //Bloccare l'autoplay automatico
+  intervalInverse = setInterval(autoplayInverse , 300); //attivare autoplay inverse
+});
+
+//BTN --- STOP THE AUTOPLAY
+stopBtn.addEventListener("click", function(){
+  clearInterval(intervalCarousel);
+  clearInterval(intervalInverse);
+})
+
+//AUTOPLAY from left to right
+function autoplay(){
+  thumbsClass[sliderPosition].classList.remove("active");
+  cleanHtml();
+  //   alert("right btn");
+  if (sliderPosition >= 4) {
+    sliderPosition = 0;
+  } else {
+    sliderPosition++;
+  }
+  creationElementAddDom();
+  thumbsClass[sliderPosition].classList.add("active");
+}
+
+function autoplayInverse(){
+  thumbsClass[sliderPosition].classList.remove("active");
+  cleanHtml();
+  if (sliderPosition > 0) {
+    sliderPosition--;
+  } else {
+    sliderPosition = 4;
+  }
+  creationElementAddDom();
+  thumbsClass[sliderPosition].classList.add("active");
+}
+
+
 
 //FUNCTION UI -------------
 /**
