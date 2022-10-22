@@ -5,12 +5,12 @@
 //[*] aggiungere l eventListener hai due btn
 //[*] ripulire div
 
-
 //TAKE from the DOM
 const leftBtn = document.getElementById("chevron-left");
 const rigthBtn = document.getElementById("chevron-rigth");
 const sliderImg = document.querySelector(".slider-img");
 const sliderText = document.querySelector(".slider-text");
+const thumbsContainer = document.querySelector(".container-thumbs");
 
 //CREO 3 ARRAY : 1 IMG 1 TITLE 1 TEXT
 const arrayImages = [];
@@ -24,28 +24,38 @@ images.forEach((item) => {
   arrayTitle.push(titleLink);
   arrayText.push(textLink);
 });
-console.log(arrayImages);
-console.log(arrayTitle);
-console.log(arrayText);
+
+//Creo DIV THUMBNAILS
+for (let i = 0; i < arrayImages.length; i++) {
+  const arrayImgItem = arrayImages[i];
+  const divThumbImg = ` <div class="thumbs">
+  <img src="${arrayImgItem}" alt=""> </div>`;
+  thumbsContainer.innerHTML += divThumbImg;
+}
 
 //USO L'INDEX delle ARRAY per placeholder
+//Active img and thumbs con index 0 
 let sliderPosition = 0;
 creationElementAddDom();
+const thumbsClass = document.getElementsByClassName("thumbs");
+thumbsClass[sliderPosition].classList.add("active");
 
 //RIGHT BTN
 rigthBtn.addEventListener("click", function () {
+  thumbsClass[sliderPosition].classList.remove("active");
   cleanHtml();
-  //   alert("right btn");
   if (sliderPosition >= 4) {
     sliderPosition = 0;
   } else {
     sliderPosition++;
   }
   creationElementAddDom();
+  thumbsClass[sliderPosition].classList.add("active");
 });
 
 //LEFT BTN
 leftBtn.addEventListener("click", function () {
+  thumbsClass[sliderPosition].classList.remove("active");
   cleanHtml();
   if (sliderPosition > 0) {
     sliderPosition--;
@@ -53,14 +63,24 @@ leftBtn.addEventListener("click", function () {
     sliderPosition = 4;
   }
   creationElementAddDom();
+  thumbsClass[sliderPosition].classList.add("active");
 });
 
 
+//ADD class ACTIVE - thumbnails
+for (let i = 0; i< thumbsClass.length; i++){
+  const thumbItem = thumbsClass[i];
+  thumbItem.addEventListener("click", function(){
+    sliderPosition = i;
+    cleanHtml();
+    creationElementAddDom();
+    thumbItem.classList.toggle("active")
+  });
+}
 
-
-//FUNCTION UI 
+//FUNCTION UI -------------
 /**
- * Description: Clean the all the slider
+ * Description: Clean all the slider.innerHTML
  */
 function cleanHtml() {
   sliderImg.innerHTML = "";
@@ -68,7 +88,7 @@ function cleanHtml() {
 }
 
 /**
- * Description Create the elements and add them in the Dom 
+ * Description Create the elements and add them in the Dom
  * the IMG, the TITLE and the PARAGRAPH
  */
 function creationElementAddDom() {
@@ -81,3 +101,4 @@ function creationElementAddDom() {
   sliderText.innerHTML += textTitle;
   sliderText.innerHTML += textText;
 }
+
