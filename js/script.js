@@ -1,8 +1,8 @@
-// PSEUDOCODICE - COSA MODIFICARE 
-//[]aumento funzioni per diminuire codice
+// PSEUDOCODICE - COSA MODIFICARE
+//[*]aumento funzioni per diminuire codice
 //[]thumbnails click - elimino toggle trovo soluzione per eliminare active
-//[]errore: click due volte BTN InverseAutoplay > velocità
-//[]errore: add click InverseAutoPLay if(va a destra){vai a sinistra}else{da sin a destra}
+//[*]errore: click due volte BTN InverseAutoplay > velocità
+//[*]errore: add click InverseAutoPLay if(va a destra){vai a sinistra}else{da sin a destra}
 
 //TAKE from the DOM
 const leftBtn = document.getElementById("chevron-left");
@@ -33,7 +33,7 @@ for (let i = 0; i < arrayImages.length; i++) {
 }
 
 //USO L'INDEX delle ARRAY per placeholder
-//Active img and thumbs con index 0 
+//Active img and thumbs con index 0
 let sliderPosition = 0;
 creationElementAddDom();
 const thumbsClass = document.getElementsByClassName("thumbs");
@@ -41,69 +41,65 @@ thumbsClass[sliderPosition].classList.add("active");
 
 //RIGHT BTN
 rigthBtn.addEventListener("click", function () {
-  thumbsClass[sliderPosition].classList.remove("active");
-  cleanHtml();
-  if (sliderPosition >= 4) {
-    sliderPosition = 0;
-  } else {
-    sliderPosition++;
-  }
-  creationElementAddDom();
-  thumbsClass[sliderPosition].classList.add("active");
+  sliderLeftToRight();
 });
 
 //LEFT BTN
 leftBtn.addEventListener("click", function () {
-  thumbsClass[sliderPosition].classList.remove("active");
-  cleanHtml();
-  if (sliderPosition > 0) {
-    sliderPosition--;
-  } else {
-    sliderPosition = 4;
-  }
-  creationElementAddDom();
-  thumbsClass[sliderPosition].classList.add("active");
+  sliderRightToLeftInverse();
 });
 
-
 //ADD class ACTIVE - thumbnails
-for (let i = 0; i< thumbsClass.length; i++){
+for (let i = 0; i < thumbsClass.length; i++) {
   const thumbItem = thumbsClass[i];
-  thumbItem.addEventListener("click", function(){
+  thumbItem.addEventListener("click", function () {
     sliderPosition = i;
     cleanHtml();
     creationElementAddDom();
-    thumbItem.classList.toggle("active")
+    thumbItem.classList.toggle("active");
   });
 }
 
-
 //AUTOPLAY-------------------------------------------
+let speedAutoplay = 400;
 //btn STOP and btn CHANGE DIRECTION
 const stopBtn = document.getElementById("btn-stop-move");
 const inverseBtn = document.getElementById("btn-change-order");
 
 //AUTOPLAY automatico from left to right
-const intervalCarousel = setInterval(autoplay, 300);
+let intervalCarousel = setInterval(sliderLeftToRight, speedAutoplay);
+let isPlayingToRight = true;
 
 //BTN --- AUTOPLAY-INVERSE from rigth to left
 let intervalInverse;
-inverseBtn.addEventListener("click", function(){
-  clearInterval(intervalCarousel); //Bloccare l'autoplay automatico
-  intervalInverse = setInterval(autoplayInverse , 300); //attivare autoplay inverse
+inverseBtn.addEventListener("click", function () {
+  clearInterval(intervalCarousel); //Bloccare l'autoplay automatico  
+  clearInterval(intervalInverse);
+  if(isPlayingToRight === true){
+    intervalInverse = setInterval(sliderRightToLeftInverse, speedAutoplay); 
+    isPlayingToRight = false;
+  } else{
+    intervalCarousel = setInterval(sliderLeftToRight, speedAutoplay);
+    isPlayingToRight = true;
+  }
 });
 
 //BTN --- STOP THE AUTOPLAY
-stopBtn.addEventListener("click", function(){
+stopBtn.addEventListener("click", function () {
   clearInterval(intervalCarousel);
   clearInterval(intervalInverse);
-})
+});
 
-//AUTOPLAY from left to right
-function autoplay(){
+
+//----------FUNCTION---------------------------------------------------------------
+
+//FUNCTION SLIDER MOVEMENT---------------
+/**VOID
+ * Description SLIDER FROM LEFT TO RIGHT
+ */
+function sliderLeftToRight() {
   thumbsClass[sliderPosition].classList.remove("active");
   cleanHtml();
-  //   alert("right btn");
   if (sliderPosition >= 4) {
     sliderPosition = 0;
   } else {
@@ -113,7 +109,10 @@ function autoplay(){
   thumbsClass[sliderPosition].classList.add("active");
 }
 
-function autoplayInverse(){
+/**VOID
+ * Description SLIDER FROM RIGHT TO LEFT
+ */
+function sliderRightToLeftInverse() {
   thumbsClass[sliderPosition].classList.remove("active");
   cleanHtml();
   if (sliderPosition > 0) {
@@ -124,8 +123,6 @@ function autoplayInverse(){
   creationElementAddDom();
   thumbsClass[sliderPosition].classList.add("active");
 }
-
-
 
 //FUNCTION UI -------------
 /**
@@ -150,4 +147,3 @@ function creationElementAddDom() {
   sliderText.innerHTML += textTitle;
   sliderText.innerHTML += textText;
 }
-
